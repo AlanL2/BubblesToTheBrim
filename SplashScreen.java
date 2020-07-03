@@ -26,8 +26,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SplashScreen { //declaring the SplashScreen class to act as template, by making an object it will run the splash screen
-   Timer timer; //Set a timer variable to keep track of when the GIFs are being displayed
-   JFrame frame; //Declaring a JFrame for this specific part of the game
+   private Timer timer; //Set a timer variable to keep track of when the GIFs are being displayed
+   private JFrame frame; //Declaring a JFrame for this specific part of the game
    public SplashScreen (JFrame frameIn) { //constructor that accepts a JFrame as the frame, this allows us to keep using the same frame
       timer = new Timer(); //initialize the timer to a new timer
       frame = frameIn; //set the class' instance variable frame to the passed in frame
