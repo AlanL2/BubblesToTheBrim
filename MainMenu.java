@@ -14,7 +14,8 @@
  * - May 30: Updated ~ Alan Li
  * - June 10: Updated ~ Alan Li
  * - June 11: Commented ~ Alan Li
- * - June 12: Finished ~ Alan Li
+ * - June 12: Updated ~ Alan Li
+ * - June 17: Finished ~ Aidan Ang
  */
 //importing needed libraries
 import java.awt.*;
@@ -31,31 +32,31 @@ import javax.imageio.*;
  */
 public class MainMenu implements ActionListener {
     /** JFrame used for this class to add all of the buttons and background to*/
-   JFrame frame;
+   private JFrame frame;
    
    /** Object to store the input and choices that the user picks*/
-   Player player;
+   private Player player;
    
    /** JButton to allow for the user to go to the game*/
-   private JButton playButton = new SemiTransparentButton("Play Game");
+   private JButton playButton = new UnicornButton("Play Game");
    
    /** JButton to allow for the user to go to instructions page*/
-   private JButton instructionButton = new SemiTransparentButton("Instructions");
+   private JButton instructionButton = new UnicornButton("Instructions");
    
    /** JButton to allow for the user to quit the game*/
-   private JButton quitButton = new SemiTransparentButton("Quit Game");
+   private JButton quitButton = new UnicornButton("Quit Game");
    
    /** JLabel to store the game title and display it on the screen*/
    private JLabel title = new JLabel("Bubbles to the Brim", SwingConstants.CENTER);
    
    /** Array of JPanels to store the buttons and the title*/
-   private JPanel menuGridLayout[] = new JPanel[4];
+   private JPanel menuGridLayout = new JPanel();
    
    /** JPanel to put the buttons together and include the background*/
    private JPanel screen;
    
    /** BufferedImage to load the background*/
-   BufferedImage background;
+   private BufferedImage background;
    
    /**
     * Constructor to initialize the values, add ActionListeners, and draw the menu
@@ -65,7 +66,6 @@ public class MainMenu implements ActionListener {
    public MainMenu(JFrame frameIn, Player playerIn){
       frame = frameIn;
       player = playerIn;
-      loadImages();
       setUpFrame();
       title.setFont(new Font("Serif", Font.PLAIN, 50));
       playButton.addActionListener(this);
@@ -77,6 +77,9 @@ public class MainMenu implements ActionListener {
       playButton.setContentAreaFilled(false);
       instructionButton.setContentAreaFilled(false);
       quitButton.setContentAreaFilled(false);
+      playButton.setFont(new Font("Arial", Font.PLAIN, 40));
+      instructionButton.setFont(new Font("Arial", Font.PLAIN, 40));
+      quitButton.setFont(new Font("Arial", Font.PLAIN, 40));
       drawMenu();
    }
    
@@ -84,10 +87,10 @@ public class MainMenu implements ActionListener {
     * method to set up the frame
     */
    public void setUpFrame(){
-      frame.setLayout(new GridLayout());
       frame.getContentPane().removeAll();
       frame.setTitle("Main Menu");
-      screen = new BackgroundPanel();
+      frame.setLayout(new GridLayout());
+      screen = new BackgroundPanel("Images/BubblesToTheBrimMainMenu.png");
       screen.setLayout(new GridLayout(4, 1));
    }
    
@@ -95,24 +98,14 @@ public class MainMenu implements ActionListener {
     * method to draw the menu
     */
    public void drawMenu(){
-      for(int i = 0; i<4; i++){
-         menuGridLayout[i] = new JPanel();
-         menuGridLayout[i].setOpaque(false);
-         menuGridLayout[i].setBorder(new EmptyBorder(10, 10, 10, 10));
-         if(i==0){
-            menuGridLayout[i].add(title);
-         }
-         else if(i==1){
-            menuGridLayout[i].add(playButton);
-         }
-         else if(i==2){
-            menuGridLayout[i].add(instructionButton);
-         }
-         else{
-            menuGridLayout[i].add(quitButton);
-         }
-         screen.add(menuGridLayout[i]);
-      }
+      for (int x = 0; x < 3; x++)
+         screen.add(new JLabel());
+      menuGridLayout.setLayout(new GridLayout(1,3));
+      menuGridLayout.setOpaque(false);
+      menuGridLayout.add(playButton);
+      menuGridLayout.add(instructionButton);
+      menuGridLayout.add(quitButton);
+      screen.add(menuGridLayout);
       frame.add(screen);
       frame.revalidate();
       frame.repaint();
@@ -138,28 +131,6 @@ public class MainMenu implements ActionListener {
       }
       else if(e.getSource()==quitButton){
          System.exit(0);
-      }
-   }
-   
-   /**
-    * method to load the background
-    */
-   public void loadImages() {
-      try {
-         background = ImageIO.read(new File("Images/mainMenuBackground.png"));
-      } catch (IOException e) {}
-   }
-   /**
-    * class for the JPanel to be initialized to so it can get the background
-    */
-   private class BackgroundPanel extends JPanel{
-       /**
-        * method that is overridden to draw the background
-        * @param g                  Graphics object to draw the background 
-        */
-      protected void paintComponent(Graphics g) {
-         super.paintComponent(g);
-         g.drawImage(background, 0, 0, this);
       }
    }
 }
