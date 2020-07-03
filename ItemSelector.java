@@ -16,7 +16,8 @@
  * - June 6: Updated ~ Aidan Ang
  * - June 9: Updated ~ Aidan Ang
  * - June 11: Commented ~ Alan Li
- * - June 12: Finished ~ Alan Li
+ * - June 12: Updated ~ Alan Li
+ * - June 17: Finished ~ Alan Li
  */
 //importing required classes 
 import java.awt.*;
@@ -29,13 +30,13 @@ import java.util.*;
  */
 public class ItemSelector {
    /** JFrame to display all of the buttons, text and images for this part of the game*/
-   JFrame frame;
+   private JFrame frame;
    
    /** Player object to store the items that the user picked*/
-   Player player;
+   private Player player;
    
    /** MainMenu object so that once it reaches level 2 the user is able to go back to the menu*/
-   MainMenu menu;
+   private MainMenu menu;
    
    /** JButton array to store all of the buttons that can be pressed to select an item*/
    private JButton[]itemButtons = {new JButton("Item 1"), new JButton("Item 2"), new JButton("Item 3"), new JButton("Item 4"),
@@ -78,14 +79,17 @@ public class ItemSelector {
    private JLabel levelTitle = new JLabel("Level 2", SwingConstants.CENTER);
    
    /** JLabel to show the info on how to go start level 2*/
-   private JLabel levelInfo = new JLabel("<html>" + " You can now pick the 4 items that you think will be the "
-                                              + "best in protecting yourself from COVID-19 while buying bubble tea." 
+   private JLabel levelInfo = new JLabel("<html>" + " You can now pick at most 4 items that you think will help "
+                                              + "protect yourself from COVID-19 while buying bubble tea." 
                                               + "</html>", SwingConstants.CENTER);
    /** JLabel to display to the user that they have to select 4 items to continue*/
-   private JLabel nextLevelInfo = new JLabel("Select " + numOfItems + " Items to continue.");
+   private JLabel nextLevelInfo = new JLabel("You can select at most " + numOfItems + " items to continue.");
    
    /** Array of JLabels to store each item's status*/
-   private JLabel[]itemPickStatus = new JLabel[9];
+   private JLabel[]itemPickStatus = {new JLabel("Antibiotics unselected.", SwingConstants.CENTER), new JLabel("Latex Gloves unselected.", SwingConstants.CENTER), 
+   new JLabel("Lysol Wipes unselected.", SwingConstants.CENTER), new JLabel("N-95 Facemask unselected.", SwingConstants.CENTER), new JLabel(), 
+       new JLabel("Purell Hand Sanitizer unselected.", SwingConstants.CENTER), new JLabel("Saline Nasal Spray unselected.", SwingConstants.CENTER), 
+       new JLabel("Thermos unselected.", SwingConstants.CENTER), new JLabel("Vitamin C Pills unselected.", SwingConstants.CENTER)};
    
    /** Array of JPanels to store each item, its corresponding button and its status*/
    private JPanel[]panelGrid = new JPanel[9];
@@ -102,44 +106,45 @@ public class ItemSelector {
       menu = menuIn;
       setUpFrame();
       itemButtons[8].setPreferredSize(new Dimension(100, 100));
-      itemButtons[8].setVisible(false);
-      itemButtons[8].setBackground(Color.GRAY);
-      itemButtons[8].setForeground(Color.BLUE);
-      for(int i = 0; i<9; i++){
-         itemPickStatus[i] = new JLabel();
-      }
+      itemButtons[8].setVisible(true);
       for(int i = 0; i<9; i++){
          itemButtons[i].addActionListener(new ItemPicker());
       }
       levelTitle.setFont(new Font("Serif", Font.BOLD, 20));
       levelInfo.setFont(new Font("Serif", Font.PLAIN, 15));
       for(int i = 0; i<9; i++){
-         panelGrid[i] = new JPanel();
-         panelGrid[i].setBorder(new EmptyBorder(10, 10, 10, 10));
-         panelGrid[i].setLayout(new BorderLayout());
-         if(i==4){
-            JPanel centerText = new JPanel();
-            centerText.setLayout(new BorderLayout());
-            centerText.add(levelTitle, BorderLayout.NORTH);
-            centerText.add(levelInfo, BorderLayout.CENTER);
-            centerText.add(nextLevelInfo, BorderLayout.SOUTH);
-            panelGrid[4].add(centerText, BorderLayout.NORTH);
-            panelGrid[4].add(itemButtons[8]);
-         }
-         else{
-            if(i<4){
-               panelGrid[i].add(items[i], BorderLayout.NORTH);
-               panelGrid[i].add(itemButtons[i], BorderLayout.SOUTH);
-            }
-            else{
-               panelGrid[i].add(items[i-1], BorderLayout.NORTH);
-               panelGrid[i].add(itemButtons[i-1], BorderLayout.SOUTH);
-            }
-         }
-         frame.add(panelGrid[i]);
-      }
-      frame.revalidate();
-      frame.repaint();
+           panelGrid[i] = new JPanel();
+           panelGrid[i].setBorder(new EmptyBorder(10, 10, 10, 10));
+           panelGrid[i].setLayout(new BorderLayout());
+           if(i==4){
+               JPanel centerText = new JPanel();
+               centerText.setLayout(new BorderLayout());
+               centerText.add(levelTitle, BorderLayout.NORTH);
+               centerText.add(levelInfo, BorderLayout.CENTER);
+               centerText.add(nextLevelInfo, BorderLayout.SOUTH);
+               panelGrid[4].add(centerText, BorderLayout.NORTH);
+               panelGrid[4].add(itemButtons[8]);
+           }
+           else{
+               JPanel infoText = new JPanel();
+               infoText.setLayout(new BorderLayout());
+               infoText.add(itemPickStatus[i], BorderLayout.NORTH);
+               if(i<4){
+                   panelGrid[i].add(items[i], BorderLayout.NORTH);
+                   panelGrid[i].add(infoText, BorderLayout.CENTER);
+                   panelGrid[i].add(itemButtons[i], BorderLayout.SOUTH);
+                   
+               }
+               else{
+                   panelGrid[i].add(items[i-1], BorderLayout.NORTH);
+                   panelGrid[i].add(infoText, BorderLayout.CENTER);
+                   panelGrid[i].add(itemButtons[i-1], BorderLayout.SOUTH);
+               }
+           }
+           frame.add(panelGrid[i]);
+       }
+       frame.validate();
+       frame.repaint();
    }
    
    /**
@@ -147,7 +152,7 @@ public class ItemSelector {
     */
    public void setUpFrame(){
       frame.getContentPane().removeAll();
-      frame.setLayout(new GridLayout(3, 3)); //modify later
+      frame.setLayout(new GridLayout(3, 3)); 
       frame.setTitle("Level 2: Item Selector");
    }
    
@@ -155,43 +160,41 @@ public class ItemSelector {
     * void method to continue to "refresh" the screen so that the current statuses of the buttons are correct
     */
    public void validate(){
-       if(curSelected==numOfItems){
+       if(curSelected<=numOfItems){
             itemButtons[8].setVisible(true);
        }
-       else{ 
-           itemButtons[8].setVisible(false);
-           frame.getContentPane().removeAll();
-           for(int i = 0; i<9; i++){
-               panelGrid[i] = new JPanel();
-               panelGrid[i].setBorder(new EmptyBorder(10, 10, 10, 10));
-               panelGrid[i].setLayout(new BorderLayout());
-               if(i==4){
-                   JPanel centerText = new JPanel();
-                   centerText.setLayout(new BorderLayout());
-                   centerText.add(levelTitle, BorderLayout.NORTH);
-                   centerText.add(levelInfo, BorderLayout.CENTER);
-                   centerText.add(nextLevelInfo, BorderLayout.SOUTH);
-                   panelGrid[4].add(centerText, BorderLayout.NORTH);
-                   panelGrid[4].add(itemButtons[8]);
+       else itemButtons[8].setVisible(false);
+       frame.getContentPane().removeAll();
+       for(int i = 0; i<9; i++){
+           panelGrid[i] = new JPanel();
+           panelGrid[i].setBorder(new EmptyBorder(10, 10, 10, 10));
+           panelGrid[i].setLayout(new BorderLayout());
+           if(i==4){
+               JPanel centerText = new JPanel();
+               centerText.setLayout(new BorderLayout());
+               centerText.add(levelTitle, BorderLayout.NORTH);
+               centerText.add(levelInfo, BorderLayout.CENTER);
+               centerText.add(nextLevelInfo, BorderLayout.SOUTH);
+               panelGrid[4].add(centerText, BorderLayout.NORTH);
+               panelGrid[4].add(itemButtons[8]);
+           }
+           else{
+               JPanel infoText = new JPanel();
+               infoText.setLayout(new BorderLayout());
+               infoText.add(itemPickStatus[i], BorderLayout.NORTH);
+               if(i<4){
+                   panelGrid[i].add(items[i], BorderLayout.NORTH);
+                   panelGrid[i].add(infoText, BorderLayout.CENTER);
+                   panelGrid[i].add(itemButtons[i], BorderLayout.SOUTH);
+                   
                }
                else{
-                   JPanel infoText = new JPanel();
-                   infoText.setLayout(new BorderLayout());
-                   infoText.add(itemPickStatus[i], BorderLayout.NORTH);
-                   if(i<4){
-                       panelGrid[i].add(items[i], BorderLayout.NORTH);
-                       panelGrid[i].add(infoText, BorderLayout.CENTER);
-                       panelGrid[i].add(itemButtons[i], BorderLayout.SOUTH);
-                       
-                   }
-                   else{
-                       panelGrid[i].add(items[i-1], BorderLayout.NORTH);
-                       panelGrid[i].add(infoText, BorderLayout.CENTER);
-                       panelGrid[i].add(itemButtons[i-1], BorderLayout.SOUTH);
-                   }
+                   panelGrid[i].add(items[i-1], BorderLayout.NORTH);
+                   panelGrid[i].add(infoText, BorderLayout.CENTER);
+                   panelGrid[i].add(itemButtons[i-1], BorderLayout.SOUTH);
                }
-               frame.add(panelGrid[i]);
            }
+           frame.add(panelGrid[i]);
        }
        frame.validate();
        frame.repaint();
@@ -345,8 +348,6 @@ public class ItemSelector {
                player.itemsHeld[x] = itemSelectChecker[x];
             LevelTwo lvlTwo = new LevelTwo(frame, player, menu);
          }
-         System.out.println(title.getText());
-         validate();
       }
    }
 }
