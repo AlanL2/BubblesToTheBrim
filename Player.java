@@ -29,29 +29,31 @@ import javax.swing.*;
  */
 public class Player implements ActionListener {
    /** The MainMenu instance which called this class */
-   MainMenu menu;
+   private MainMenu menu;
    /** The frame to display to */
-   JFrame frame;
+   private JFrame frame;
+   /** JPanel for output formatting */
+   private JPanel screen;
    /** The title of the name input section */
-   JLabel nameTitle;
-   /** The textfield which the player enters their name into*/
-   JTextField nameField;
+   private JLabel nameTitle;
+   /** The textfield which the player enters their name into */
+   private JTextField nameField;
    /** The submit button for the name input section */
-   JButton nameSubmitButton;
+   private JButton nameSubmitButton;
    /** The title of the gender input section */
-   JLabel genderTitle;
+   private JLabel genderTitle;
    /** The button to indicate your are male */
-   JButton genderButtonMale;
+   private JButton genderButtonMale;
    /** The button to indicate your are female */
-   JButton genderButtonFemale;
+   private JButton genderButtonFemale;
    /** The button to indicate your are neither male nor female */
-   JButton genderButtonOther;
+   private JButton genderButtonOther;
    /** The title of the favorite drink input section */
-   JLabel drinkTitle;
+   private JLabel drinkTitle;
    /** The textfield which the player enters their favorite drink into*/
-   JTextField drinkField;
+   private JTextField drinkField;
    /** The submit button for the favorite drink input section */
-   JButton drinkSubmitButton;
+   private JButton drinkSubmitButton;
    
    // user data
    /** Player's name */
@@ -76,14 +78,20 @@ public class Player implements ActionListener {
       menu = menuIn;
       frame = frameIn;
       frame.getContentPane().removeAll();
-      frame.setLayout(new GridLayout(5, 3));
+      frame.setLayout(new GridLayout());
+      screen = new BackgroundPanel("Images/scene3Blur.png");
+      screen.setLayout(new GridLayout(5, 3));
             
       nameTitle = new JLabel ("Please enter your name:", SwingConstants.CENTER);
+      nameTitle.setForeground(Color.white);
+      nameTitle.setFont(new Font("Serif", Font.PLAIN, 24));
       nameField = new JTextField(10);
       nameSubmitButton = new JButton ("Submit");
       nameSubmitButton.addActionListener(this);
       
       genderTitle = new JLabel ("Please select your gender:", SwingConstants.CENTER);
+      genderTitle.setForeground(Color.white);
+      genderTitle.setFont(new Font("Serif", Font.PLAIN, 24));
       genderButtonMale = new JButton ("Male");
       genderButtonFemale = new JButton ("Female");
       genderButtonOther = new JButton ("Other");
@@ -92,6 +100,8 @@ public class Player implements ActionListener {
       genderButtonOther.addActionListener(this);
       
       drinkTitle = new JLabel ("Please enter the name of your favorite drink:", SwingConstants.CENTER);
+      drinkTitle.setForeground(Color.white);
+      drinkTitle.setFont(new Font("Serif", Font.PLAIN, 24));
       drinkField = new JTextField(10);
       drinkSubmitButton = new JButton ("Submit");
       drinkSubmitButton.addActionListener(this);
@@ -109,49 +119,53 @@ public class Player implements ActionListener {
     */
    public void askName() {      
       for (int x = 0; x < 4; x++)
-         frame.add(new JLabel());   
-      frame.add (nameTitle); 
+         screen.add(new JLabel());   
+      screen.add (nameTitle); 
       for (int x = 0; x < 2; x++)
-         frame.add(new JLabel());  
-      frame.add(nameField);
+         screen.add(new JLabel());  
+      screen.add(nameField);
       for (int x = 0; x < 2; x++)
-         frame.add(new JLabel());  
+         screen.add(new JLabel());  
          
       JPanel submitPane = new JPanel();
       submitPane.setLayout(new GridLayout(3, 3));
+      submitPane.setOpaque(false);
       for (int x = 0; x < 4; x++)
          submitPane.add(new JLabel()); 
       submitPane.add(nameSubmitButton, BorderLayout.CENTER);
       for (int x = 0; x < 4; x++)
          submitPane.add(new JLabel()); 
-      frame.add(submitPane);
-      
+      screen.add(submitPane);
       for (int x = 0; x < 4; x++)
-         frame.add(new JLabel());     
-     
+         screen.add(new JLabel());
+              
+      frame.add(screen);
       frame.revalidate();
       frame.repaint();
    }
    /** Prompts the user to select his/her gender from the three JButton options displayed
     */
    public void askGender () {
-      frame.getContentPane().removeAll();
+      frame.getContentPane().removeAll(); 
+      screen.removeAll();
       for (int x = 0; x < 4; x++)
-         frame.add(new JLabel());   
-      frame.add (genderTitle); 
+         screen.add(new JLabel());   
+      screen.add (genderTitle); 
       for (int x = 0; x < 2; x++)
-         frame.add(new JLabel());  
+         screen.add(new JLabel());  
       
       JPanel genderOptions = new JPanel();
       genderOptions.setLayout(new GridLayout(1,3));
+      genderOptions.setOpaque(false);
       genderOptions.add(genderButtonMale);
       genderOptions.add(genderButtonFemale);
       genderOptions.add(genderButtonOther);
-      frame.add(genderOptions);
-   
+      screen.add(genderOptions);
       for (int x = 0; x < 7; x++)
-         frame.add(new JLabel());  
-      frame.setVisible(true);
+         screen.add(new JLabel());
+         
+      frame.add(screen);
+      frame.revalidate();
       frame.repaint();
    }
    /** Makes a weighted random calculation on whether or not the player has been infected
@@ -167,28 +181,30 @@ public class Player implements ActionListener {
    /** Prompts the user to enter his/her gender favorite bubble tea flavor into the JTextField displayed
     */
    public void askDrink() {    
-      frame.getContentPane().removeAll();  
+      frame.getContentPane().removeAll(); 
+      screen.removeAll();
       for (int x = 0; x < 4; x++)
-         frame.add(new JLabel());   
-      frame.add (drinkTitle); 
+         screen.add(new JLabel());   
+      screen.add (drinkTitle); 
       for (int x = 0; x < 2; x++)
-         frame.add(new JLabel());  
-      frame.add(drinkField);
+         screen.add(new JLabel());  
+      screen.add(drinkField);
       for (int x = 0; x < 2; x++)
-         frame.add(new JLabel());  
+         screen.add(new JLabel());  
          
       JPanel submitPane = new JPanel();
       submitPane.setLayout(new GridLayout(3, 3));
+      submitPane.setOpaque(false);
       for (int x = 0; x < 4; x++)
          submitPane.add(new JLabel()); 
       submitPane.add(drinkSubmitButton, BorderLayout.CENTER);
       for (int x = 0; x < 4; x++)
          submitPane.add(new JLabel()); 
-      frame.add(submitPane);
-      
+      screen.add(submitPane);
       for (int x = 0; x < 4; x++)
-         frame.add(new JLabel());     
-     
+         screen.add(new JLabel());     
+         
+      frame.add(screen);
       frame.revalidate();
       frame.repaint();
    }
