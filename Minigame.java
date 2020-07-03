@@ -16,7 +16,8 @@
  * - June 12: Updated ~ Aidan Ang
  * - June 13: Commented ~ Alan Li
  * - June 14: Commented ~ Aidan Ang
- * - JUne 14: Finished ~ Alan Li
+ * - June 14: Updated ~ Alan Li
+ * - June 17: Finished ~ Aidan ANg
  */
 import java.awt.*;
 import java.awt.image.*;
@@ -41,11 +42,11 @@ public class Minigame extends JPanel implements ActionListener {
    /** The button to progress through the outro scene */
    private JButton outroButton = new JButton("<html><i>Sigh</i></html>");
    /** The background image */
-   BufferedImage storeInside;
+   private BufferedImage storeInside;
    /** The frame to display graphics on */
-   JFrame frame;
+   private JFrame frame;
    /** The LevelTwo instance to return to */
-   LevelTwo lvlTwo;
+   private LevelTwo lvlTwo;
    /** The number of buttons shown so far in this instance of Minigame */
    private int buttonsShown;
    /** The number of buttons the player will see in this instance of Minigame */
@@ -53,9 +54,9 @@ public class Minigame extends JPanel implements ActionListener {
    /** Number of clicks the player has missed in this instance of Minigame */
    public int missedClicks;
    /** Output JPanel */
-   JPanel screen;
+   private JPanel screen;
    /** Application's timer */
-   Timer timer;
+   private Timer timer;
    /** Constructs a new Minigame, displaying graphics to the specified frame and returning to the specified LevelTwo instance upon completion
     * @param frameIn The frame to display graphics on
     * @param lvlTwoIn The LevelTwo instance to return to once the player completes the game
@@ -63,7 +64,6 @@ public class Minigame extends JPanel implements ActionListener {
    public Minigame(JFrame frameIn, LevelTwo lvlTwoIn) {
       frame = frameIn;
       lvlTwo = lvlTwoIn;
-      loadImages();
       buttonsShown = 0;
       pressRequirement = (int)(Math.random()*6)+5;
       missedClicks = 0;
@@ -101,7 +101,7 @@ public class Minigame extends JPanel implements ActionListener {
     */
    public void cutScene (int scene) {
       frame.getContentPane().removeAll();
-      screen = new BackgroundPanel();
+      screen.removeAll();
       if (scene == 1) {
          screen.setLayout(new GridLayout(10, 1));
          JLabel tempText = new SemiTransparentLabel("<html><center>Uh oh. Your nose is itchy, but you have to resist the urge to scratch or you'll touch your face!<br>" +
@@ -163,27 +163,8 @@ public class Minigame extends JPanel implements ActionListener {
       frame.getContentPane().removeAll();
       frame.setTitle("Level 2: Bubbles to the Brim");
       frame.setLayout(new GridLayout());
-      screen = new BackgroundPanel();
+      screen = new BackgroundPanel("Images/scene2.png");
       screen.setLayout(new GridLayout(10, 10));
-   }
-   /** Loads the background image for the minigame
-    */
-   public void loadImages() {
-      try {
-         storeInside = ImageIO.read(new File("Images/scene2.png"));
-      } catch (IOException e) {}
-   }
-   /** Creates a JPanel with an image in the background
-    */
-   private class BackgroundPanel extends JPanel{
-     /** Overrides the JPanel method of same name and parameters to draw a background on the JPanel
-       * @override
-       * @param g "The Graphics object to protect", according to the Oracle API (https://docs.oracle.com/javase/7/docs/api/javax/swing/JComponent.html#paintComponent(java.awt.Graphics))
-       */
-      protected void paintComponent(Graphics g) {
-         super.paintComponent(g);
-         g.drawImage(storeInside, 0, 0, this);
-      }
    }
    /** Ends the game
     * @param game The Minigame instance to remove from randomMovingButton
