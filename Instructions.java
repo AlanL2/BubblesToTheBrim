@@ -11,7 +11,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
-
 /**
     *  Displays  game's instructions and is accessed through/returns to main menu
     * <pre>
@@ -19,7 +18,8 @@ import java.util.*;
     *  - May 27, 2020: Created ~Alan Li
     *  - June 5, 2020: Updated ~Aidan Ang
     *  - June 14, 2020: Commented ~Aidan Ang
-    *  - June 14, 2020: Finished ~Aidan Ang
+    *  - June 14, 2020: Updated ~Aidan Ang
+    *  - June 17, 2020: Finished ~Aidan Ang
     * </pre>
     * @author Aidan Ang
     * @author Alan Li
@@ -27,13 +27,15 @@ import java.util.*;
     */
 public class Instructions implements ActionListener {
   /** The frame to display to */
-   JFrame frame;
+   private JFrame frame;
    /** The instructions */
-   JLabel instructionField;
+   private JLabel instructionField;
    /** MainMenu instance to return to upon game completion */
-   MainMenu menu;
+   private MainMenu menu;
    /** Button to return to main menu */
    private JButton backButton = new JButton("Back to Main Menu");
+   /** JPanel for output formatting */
+   private JPanel screen;
    /** Constructs a new Instructions, displaying graphics to the specified frame and returning to the specified MainMenu instance when the user is finished reading
     * @param frameIn The frame to display graphics on
     * @param menuIn The MainMenu instance to return to
@@ -41,9 +43,6 @@ public class Instructions implements ActionListener {
    public Instructions (JFrame frameIn, MainMenu menuIn) {
       menu = menuIn;
       frame = frameIn;
-      frame.getContentPane().removeAll();
-      frame.setTitle("Instructions");
-      frame.setLayout(new GridBagLayout());
       GridBagConstraints c = new GridBagConstraints();
       setUpFrame(c);
       backButton.addActionListener(this);
@@ -53,8 +52,13 @@ public class Instructions implements ActionListener {
    /** Sets up the frame for display
     * @param c The GridBagConstraints object to be used for adding components to containers
     */
-   public void setUpFrame (GridBagConstraints c) {     
-      instructionField = new JLabel(
+   public void setUpFrame (GridBagConstraints c) { 
+      frame.getContentPane().removeAll();
+      frame.setTitle("Instructions");
+      screen = new BackgroundPanel("Images/scene1Blur.png");
+      screen.setLayout(new GridBagLayout());
+      screen.setBorder(new EmptyBorder(32, 32, 32, 32));
+      instructionField = new SemiTransparentLabel(
          "<html>" +
          "Instructions<br><br>" + 
          "Welcome to Bubbles to the Brim!<br>" +
@@ -75,6 +79,7 @@ public class Instructions implements ActionListener {
          "- Aidan Ang & Alan Li, Virusoft Inc. founders" + 
          "</html>"
          , SwingConstants.CENTER);
+      instructionField.setForeground(new Color (0,64,0));
       instructionField.setFont(new Font("Serif", Font.PLAIN, 18));
       c.fill = GridBagConstraints.HORIZONTAL;
       c.ipady = 100;
@@ -82,8 +87,7 @@ public class Instructions implements ActionListener {
       c.gridwidth = 3;
       c.gridx = 0;
       c.gridy = 1;
-      frame.add(instructionField, c);
-      
+      screen.add(instructionField, c);
       c.fill = GridBagConstraints.HORIZONTAL;
       c.ipady = 0;
       c.weighty = 1.0;
@@ -91,7 +95,8 @@ public class Instructions implements ActionListener {
       c.insets = new Insets(0,360,0,360);
       c.gridx = 0;
       c.gridy = 2;
-      frame.add(backButton, c);
+      screen.add(backButton, c);
+      frame.add(screen);
    }
    /** Called when an action occurs (a button is pressed); when the backButton is pressed the game returns to the MainMenu instance specified in the constructor
     * @param e The ActionEvent which triggered the function
