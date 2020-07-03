@@ -4,17 +4,11 @@
  * Main
  * Mrs. Krasteva
  * The purpose of this program is to display our splash screen that we used at the beginning of our program 
- * 
- * 
- * 
- * Revisions: 
- * - May 25: Created ~ Alan Li
- * - May 28: Updated ~ Alan Li
- * - May 30: Updated ~ Aidan Ang
- * - June 3: Updated ~ Aidan Ang
- * - June 7: Commented ~ Aidan Ang
- * - June 8: Commented ~ Alan Li
- * - June 9: Finished ~ Aidan Ang
+ *
+ * Revisions
+ * May 28: Created ~ Aidan Ang
+ * June 7: Commented ~ Aidan Ang
+ * June 14: Finished ~ Aidan Ang
  */
 //importing needed libraries
 import java.awt.*;
