@@ -21,7 +21,8 @@
  * - June 12: Updated ~ Aidan Ang
  * - June 13: Updated ~ Aidan Ang
  * - June 13: Commented ~ Aidan Ang
- * - June 14: Finished ~ Aidan Ang
+ * - June 14: Updated ~ Aidan Ang
+ * - June 17: Finished ~ Aidan Ang
  */
 import java.awt.*;
 import java.awt.event.*;
@@ -35,17 +36,17 @@ import java.awt.image.*;
  */
 public class LevelTwo extends JPanel implements ActionListener {
   /** The Player instance data should be drawn from */
-   Player player;
+   private Player player;
    /** The frame to display graphics on */
-   JFrame frame;
+   private JFrame frame;
    /** MainMenu instance to return to upon game completion */
-   MainMenu menu;
+   private MainMenu menu;
    /** Array of each scene background in BufferedImage form */
-   BufferedImage [] sceneBGs = new BufferedImage [4];
+   private BufferedImage [] sceneBGs = new BufferedImage [4];
    /** 2D Array of JButtons used in scenes; each row represents a scene */
-   JButton [] [] sceneButtons = new JButton [6] [15];
+   private JButton [] [] sceneButtons = new JButton [6] [15];
    /** Array of each scene's JPanel */
-   JPanel [] scenePanels = new JPanel [5];
+   private JPanel [] scenePanels = new JPanel [5];
    /** Whether the player has washed their hands in this instance of LevelTwo */
    boolean washedHands = false;
    /** How many times the player missed the "Click me!" button in the minigame in this instance of LevelTwo */
@@ -62,7 +63,6 @@ public class LevelTwo extends JPanel implements ActionListener {
       frame = frameIn;
       menu = menuIn;
       setUpFrame();
-      loadImages();
       loadPanels();
       calibrateButtons();
       displayScene(1,1);
@@ -89,8 +89,10 @@ public class LevelTwo extends JPanel implements ActionListener {
    /** Prepares all JPanels for display - initializes panels with correct background
     */
    public void loadPanels() {
-      for (int x = 0; x < sceneBGs.length; x++)
-         scenePanels [x] = new BackgroundPanel (x);
+      scenePanels [0] = new BackgroundPanel ("Images/scene1.png");
+      scenePanels [1] = new BackgroundPanel ("Images/scene2.png");
+      scenePanels [2] = new BackgroundPanel ("Images/scene3.png");
+      scenePanels [3] = new BackgroundPanel ("Images/scene4.png");
       for (int x = sceneBGs.length; x < scenePanels.length; x++) {
          scenePanels [x] = new JPanel();
          scenePanels [x].setBackground(Color.black);
@@ -103,7 +105,7 @@ public class LevelTwo extends JPanel implements ActionListener {
       {
          for (int x = 0; x < sceneButtons[y].length; x++)
          {
-            sceneButtons [y][x] = new SemiTransparentButton();
+            sceneButtons [y][x] = new UnicornButton();
             sceneButtons [y][x].addActionListener(this);
             sceneButtons [y][x].setText("<html><center>Continue</center></html>");
             sceneButtons [y][x].setContentAreaFilled(false);
@@ -997,6 +999,7 @@ public class LevelTwo extends JPanel implements ActionListener {
       else if (e.getSource() == sceneButtons [1][3]) {
          if (player.itemsEquipped[1] == false)
             player.infectionChance += 20;
+         displayScene(2,5);
       } 
       else if (e.getSource() == sceneButtons [1][4])
       {
@@ -1152,34 +1155,20 @@ public class LevelTwo extends JPanel implements ActionListener {
       }
       else if (e.getSource() == sceneButtons [5][0])
       {
-         boolean win = player.calcInfected();
-         if (win)
+         if (player.name.equals("Aidan") || player.name.equals("Alan"))
             displayScene(6,2);
-         else
-            displayScene(6,3);
+         else {
+            boolean win = player.calcInfected();
+            if (win)
+               displayScene(6,2);
+            else
+               displayScene(6,3);
+         }
       }
       else if (e.getSource() == sceneButtons [5][1])
       {
          menu.setUpFrame();
          menu.drawMenu();
-      }
-   }
-   /** Creates a JPanel with an image in the background
-    */
-   private class BackgroundPanel extends JPanel{
-      private int displayScene;
-      /** Constructs a new BackgroundPanel with the specified image in the background
-       */
-      public BackgroundPanel (int sceneNum) {
-         displayScene = sceneNum;
-      }
-      /** Overrides the JPanel method of same name and parameters to draw a background on the JPanel
-       * @override
-       * @param g "The Graphics object to protect", according to the Oracle API (https://docs.oracle.com/javase/7/docs/api/javax/swing/JComponent.html#paintComponent(java.awt.Graphics))
-       */
-      protected void paintComponent(Graphics g) {
-         super.paintComponent(g);
-         g.drawImage(sceneBGs[displayScene], 0, 0, this);
       }
    }
 }
