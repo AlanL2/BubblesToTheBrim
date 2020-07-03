@@ -26,17 +26,18 @@ import java.util.*;
  * implements MouseListener so it can be clicked
  */
 public class RoundButton extends JButton implements MouseListener{
-    Color buttonCol = new Color(192, 192, 192);
+    private int actions;
+    private Color buttonCol = new Color(192, 192, 192);
     /*
      * Constructor that uses super to store the text on the button
-     * @param buttonText         stores the text that is going to be put on the button
+     * @param buttonText Stores the text that is going to be put on the button
      */
     public RoundButton(String buttonText){
         super(buttonText);
     }
     /*
      * paint method that paints the rounded button
-     * @param g                     Graphics used to draw the button itself and make it display
+     * @param g Graphics used to draw the button itself and make it display
      */
     public void paint(Graphics g){
         setBackground(getParent().getBackground());
@@ -52,7 +53,7 @@ public class RoundButton extends JButton implements MouseListener{
         int x = (int)(getWidth()-r.getWidth())/2, y = (int)(getHeight()-getFont().getSize())/2; 
         g.drawString(getText(), x, (int)getFont().getSize()+y);
     }
-    @Override
+    // @Override
     /*
      * overriden method to check if the mouse has entered the button or not
      * @param e                          Checks for an event/action done by the mouse
@@ -64,10 +65,10 @@ public class RoundButton extends JButton implements MouseListener{
      * overriden method to check if the mouse has exited the button
      * @param e                          Checks for an event/action done by the mouse
      */
-    @Override
+    // @Override
     public void mouseExited(MouseEvent e){
     }
-    @Override
+    // @Override
     /*
      * overriden method to check if the mouse has been pressed or not
      * @param e                          Checks for an event/action done by the mouse
@@ -75,14 +76,14 @@ public class RoundButton extends JButton implements MouseListener{
     public void mousePressed(MouseEvent e){
     }
     
-    @Override
+    // @Override
     /*
      * overriden method to check if the mouse has been released or not
      * @param e                          Checks for an event/action done by the mouse
      */
     public void mouseReleased(MouseEvent e){
     }
-    @Override
+    // @Override
     /*
      * overriden method to check if the mouse has been clicked or not
      * @param e                          Checks for an event/action done by the mouse
